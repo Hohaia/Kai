@@ -76,9 +76,13 @@ namespace Kai.UI
             RefreshGridData();
         }
 
-        private void SearchTxt_TextChanged(object sender, EventArgs e)
+        private async void SearchTxt_TextChanged(object sender, EventArgs e)
         {
-            RefreshGridData();
+            int lengthBeforePause = SearchTxt.Text.Length;
+            await Task.Delay(500);
+
+            if (lengthBeforePause == SearchTxt.Text.Length)
+                RefreshGridData();
         }
 
         private void ClearAllFieldsBtn_Click(object sender, EventArgs e)
