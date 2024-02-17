@@ -28,10 +28,12 @@ namespace Kai
         {
             ServiceCollection services = new ServiceCollection();
 
-            if (ConfigurationManager.AppSettings["repositoryType"] == "txt")
-                services.AddTransient<IIngredientsRepository>(_ => new IngredientsTxtRepository());
-            else
-                services.AddTransient<IIngredientsRepository>(_ => new IngredientsRepository());
+            services.AddTransient<IIngredientsRepository>(_ => new IngredientsRepository()); // TODO: REMOVE THIS LINE AFTER RE-ENABLING THE TXT REPOSITORY
+
+            //if (ConfigurationManager.AppSettings["repositoryType"] == "txt")
+            //    services.AddTransient<IIngredientsRepository>(_ => new IngredientsTxtRepository());
+            //else
+            //    services.AddTransient<IIngredientsRepository>(_ => new IngredientsRepository());
 
             services.AddTransient<IngredientsForm>();
 

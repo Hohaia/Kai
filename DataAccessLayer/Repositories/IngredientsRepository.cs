@@ -30,7 +30,7 @@ namespace DataAccessLayer.Repositories
             string query = "select * from Ingredients";
             if (!string.IsNullOrEmpty(name))
             {
-                query += $" where Name like '{name}%'";
+                query += $" where Name like '%{name}%'";
             }
 
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))

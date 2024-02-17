@@ -28,15 +28,6 @@ namespace Kai.UI
             CustomiseGridAppearance();
         }
 
-        private void AddToKeteBtn_Click(object sender, EventArgs e)
-        {
-            Ingredient ingredient = new Ingredient(NameTxt.Text, TypeDrop.Text, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value);
-
-            _ingredientsRepository.AddIngredient(ingredient);
-            ClearAllFields();
-            RefreshGridData();
-        }
-
         private void ClearAllFields()
         {
             NameTxt.Text = string.Empty;
@@ -45,11 +36,12 @@ namespace Kai.UI
             UnitOfMeasurementDrop.Items.Clear();
             KcalPer100gNum.Value = 0;
             PricePer100gNum.Value = 0;
+            SearchTxt.Text = string.Empty;
         }
 
         private void RefreshGridData()
         {
-            IngredientsGrid.DataSource = _ingredientsRepository.GetIngredients();
+            IngredientsGrid.DataSource = _ingredientsRepository.GetIngredients(SearchTxt.Text);
         }
 
         private void CustomiseGridAppearance()
@@ -70,6 +62,25 @@ namespace Kai.UI
 
             IngredientsGrid.Columns.Clear();
             IngredientsGrid.Columns.AddRange(columns);
+        }
+
+        private void AddToKeteBtn_Click(object sender, EventArgs e)
+        {
+            Ingredient ingredient = new Ingredient(NameTxt.Text, TypeDrop.Text, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value);
+
+            _ingredientsRepository.AddIngredient(ingredient);
+            ClearAllFields();
+            RefreshGridData();
+        }
+
+        private void SearchTxt_TextChanged(object sender, EventArgs e)
+        {
+            RefreshGridData();
+        }
+
+        private void ClearAllFieldsBtn_Click(object sender, EventArgs e)
+        {
+            ClearAllFields();
         }
     }
 }
