@@ -39,9 +39,9 @@ namespace Kai.UI
             SearchTxt.Text = string.Empty;
         }
 
-        private void RefreshGridData()
+        private async void RefreshGridData()
         {
-            IngredientsGrid.DataSource = _ingredientsRepository.GetIngredients(SearchTxt.Text);
+            IngredientsGrid.DataSource = await _ingredientsRepository.GetIngredients(SearchTxt.Text);
         }
 
         private void CustomiseGridAppearance()

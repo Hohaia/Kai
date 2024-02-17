@@ -169,7 +169,7 @@
             IngredientsGrid.Location = new Point(12, 60);
             IngredientsGrid.Name = "IngredientsGrid";
             IngredientsGrid.RowTemplate.Height = 25;
-            IngredientsGrid.Size = new Size(620, 412);
+            IngredientsGrid.Size = new Size(620, 372);
             IngredientsGrid.TabIndex = 13;
             // 
             // TypeDrop
@@ -206,7 +206,7 @@
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1100, 493);
+            ClientSize = new Size(1100, 443);
             Controls.Add(ClearAllFieldsBtn);
             Controls.Add(SearchTxt);
             Controls.Add(TypeDrop);

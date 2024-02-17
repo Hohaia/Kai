@@ -25,17 +25,18 @@ namespace DataAccessLayer.Repositories
             }
         }
 
-        public List<Ingredient> GetIngredients(string? name = "")
+        public async Task<List<Ingredient>> GetIngredients(string? name = "")
         {
             string query = "select * from Ingredients";
             if (!string.IsNullOrEmpty(name))
-            {
                 query += $" where Name like '%{name}%'";
-            }
+
+            string delay = " WAITFOR DELAY '00:00:02'"; // TODO: Remove this line after testing
+            query += delay;                             // TODO: Remove this line after testing
 
             using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
             {
-                return connection.Query<Ingredient>(query).ToList();
+                return (await connection.QueryAsync<Ingredient>(query)).ToList();
             }
         }
     }
