@@ -31,17 +31,17 @@ namespace Kai.UI
         private void ClearAllFields()
         {
             NameTxt.Text = string.Empty;
-            TypeDrop.Items.Clear();
+            TypeDrop.Text = string.Empty;
             QuantityNum.Value = 1;
-            UnitOfMeasurementDrop.Items.Clear();
+            UnitOfMeasurementDrop.Text = string.Empty;
             KcalPer100gNum.Value = 0;
             PricePer100gNum.Value = 0;
             SearchTxt.Text = string.Empty;
         }
 
-        private void RefreshGridData()
+        private async void RefreshGridData()
         {
-            IngredientsGrid.DataSource = _ingredientsRepository.GetIngredients(SearchTxt.Text);
+            IngredientsGrid.DataSource = await _ingredientsRepository.GetIngredients(SearchTxt.Text);
         }
 
         private void CustomiseGridAppearance()
@@ -64,11 +64,14 @@ namespace Kai.UI
             IngredientsGrid.Columns.AddRange(columns);
         }
 
-        private void AddToKeteBtn_Click(object sender, EventArgs e)
+        private async void AddToKeteBtn_Click(object sender, EventArgs e)
         {
             Ingredient ingredient = new Ingredient(NameTxt.Text, TypeDrop.Text, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value);
 
-            _ingredientsRepository.AddIngredient(ingredient);
+            AddToKeteBtn.Enabled = false;
+            await _ingredientsRepository.AddIngredient(ingredient);
+            AddToKeteBtn.Enabled = true;
+
             ClearAllFields();
             RefreshGridData();
         }

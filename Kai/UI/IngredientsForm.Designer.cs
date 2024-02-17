@@ -169,14 +169,14 @@
             IngredientsGrid.Location = new Point(12, 60);
             IngredientsGrid.Name = "IngredientsGrid";
             IngredientsGrid.RowTemplate.Height = 25;
-            IngredientsGrid.Size = new Size(620, 412);
+            IngredientsGrid.Size = new Size(620, 372);
             IngredientsGrid.TabIndex = 13;
             // 
             // TypeDrop
             // 
             TypeDrop.DropDownStyle = ComboBoxStyle.DropDownList;
             TypeDrop.FormattingEnabled = true;
-            TypeDrop.Items.AddRange(new object[] { "Condiment", "Fruit", "Liquid", "Meat", "Spice", "Vegetable" });
+            TypeDrop.Items.AddRange(new object[] { "Condiment", "Dairy", "Fruit", "Liquid", "Meat", "Spice", "Vegetable" });
             TypeDrop.Location = new Point(785, 117);
             TypeDrop.Name = "TypeDrop";
             TypeDrop.Size = new Size(303, 33);
@@ -206,7 +206,7 @@
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1100, 493);
+            ClientSize = new Size(1100, 443);
             Controls.Add(ClearAllFieldsBtn);
             Controls.Add(SearchTxt);
             Controls.Add(TypeDrop);
