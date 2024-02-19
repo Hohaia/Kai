@@ -171,6 +171,7 @@
             IngredientsGrid.RowTemplate.Height = 25;
             IngredientsGrid.Size = new Size(620, 372);
             IngredientsGrid.TabIndex = 13;
+            IngredientsGrid.CellClick += IngredientsGrid_CellClick;
             // 
             // TypeDrop
             // 

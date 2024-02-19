@@ -51,7 +51,7 @@ namespace Kai.UI
 
             IngredientsGrid.AutoGenerateColumns = false;
 
-            DataGridViewColumn[] columns = new DataGridViewColumn[7];
+            DataGridViewColumn[] columns = new DataGridViewColumn[8];
             columns[0] = new DataGridViewTextBoxColumn() { DataPropertyName = "ID", Visible = false };
             columns[1] = new DataGridViewTextBoxColumn() { DataPropertyName = "Name", HeaderText = "Name" };
             columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "Type", HeaderText = "Type" };
@@ -59,6 +59,7 @@ namespace Kai.UI
             columns[4] = new DataGridViewTextBoxColumn() { DataPropertyName = "UnitOfMeasurement", HeaderText = "Unit" };
             columns[5] = new DataGridViewTextBoxColumn() { DataPropertyName = "PricePer100g", HeaderText = "Price (100g)" };
             columns[6] = new DataGridViewTextBoxColumn() { DataPropertyName = "KcalPer100g", HeaderText = "Kcal (100g)" };
+            columns[7] = new DataGridViewButtonColumn() { Text = "Delete", Name = "DeleteBtn", HeaderText = "", UseColumnTextForButtonValue = true };
 
             IngredientsGrid.Columns.Clear();
             IngredientsGrid.Columns.AddRange(columns);
@@ -146,6 +147,17 @@ namespace Kai.UI
         private void ClearAllFieldsBtn_Click(object sender, EventArgs e)
         {
             ClearAllFields();
+        }
+
+        private async void IngredientsGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && IngredientsGrid.CurrentCell is DataGridViewButtonCell)
+            {
+                Ingredient clickedIngredient = (Ingredient)IngredientsGrid.Rows[e.RowIndex].DataBoundItem;
+
+                await _ingredientsRepository.DeleteIngredient(clickedIngredient);
+                RefreshGridData();
+            }
         }
     }
 }
