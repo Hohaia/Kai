@@ -31,9 +31,9 @@ namespace Kai.UI
         private void ClearAllFields()
         {
             NameTxt.Text = string.Empty;
-            TypeDrop.Text = string.Empty;
+            TypeDrop.SelectedItem = null;
             QuantityNum.Value = 1;
-            UnitOfMeasurementDrop.Text = string.Empty;
+            UnitOfMeasurementDrop.SelectedItem = null;
             KcalPer100gNum.Value = 0;
             PricePer100gNum.Value = 0;
             SearchTxt.Text = string.Empty;
@@ -64,8 +64,66 @@ namespace Kai.UI
             IngredientsGrid.Columns.AddRange(columns);
         }
 
+        private bool IsValid()
+        {
+            bool isValid = true;
+            string message = "";
+
+            if (string.IsNullOrEmpty(NameTxt.Text))
+            {
+                isValid = false;
+                message += "'Name' is required\n\n";
+            }
+            else
+            {
+                List<Ingredient> allIngredients = (List<Ingredient>)IngredientsGrid.DataSource;
+
+                foreach (Ingredient ingredient in allIngredients)
+                {
+                    if (ingredient.Name.ToLower() == NameTxt.Text.ToLower())
+                    {
+                        MessageBox.Show("An ingredient with this name already exists", "Invalid input");
+                        return false;
+                    }
+                }
+            }
+            if (string.IsNullOrEmpty(TypeDrop.Text))
+            {
+                isValid = false;
+                message += "'Type' is required\n\n";
+            }
+            if (QuantityNum.Value <= 0)
+            {
+                isValid = false;
+                message += "'Quantity' is required\n\n";
+            }
+            if (string.IsNullOrEmpty(UnitOfMeasurementDrop.Text))
+            {
+                isValid = false;
+                message += "'Unit of Measurement' is required\n\n";
+            }
+            if (KcalPer100gNum.Value < 0)
+            {
+                isValid = false;
+                message += "'Kcal per 100g' cannot be less than 0\n\n";
+            }
+            if (PricePer100gNum.Value < 0)
+            {
+                isValid = false;
+                message += "'Price' cannot be less than 0\n\n";
+            }
+
+            if (!isValid)
+                MessageBox.Show(message, "Invalid input");
+
+            return isValid;
+        }
+
         private async void AddToKeteBtn_Click(object sender, EventArgs e)
         {
+            if (!IsValid())
+                return;
+
             Ingredient ingredient = new Ingredient(NameTxt.Text, TypeDrop.Text, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value);
 
             AddToKeteBtn.Enabled = false;
