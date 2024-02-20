@@ -16,6 +16,7 @@ namespace Kai.UI
     public partial class IngredientsForm : Form
     {
         readonly IIngredientsRepository _ingredientsRepository;
+        private int _ingredientToEditID;
         public IngredientsForm(IIngredientsRepository ingredientsRepository)
         {
             InitializeComponent();
@@ -26,9 +27,12 @@ namespace Kai.UI
         {
             RefreshGridData();
             CustomiseGridAppearance();
+
+            AddToKeteBtn.Visible = true;
+            EditIngredientBtn.Visible = false;
         }
 
-        private void ClearAllFields()
+        private void ClearInputFields()
         {
             NameTxt.Text = string.Empty;
             TypeDrop.SelectedItem = null;
@@ -36,7 +40,21 @@ namespace Kai.UI
             UnitOfMeasurementDrop.SelectedItem = null;
             KcalPer100gNum.Value = 0;
             PricePer100gNum.Value = 0;
+
+            AddToKeteBtn.Visible = true;
+            EditIngredientBtn.Visible = false;
+            _ingredientToEditID = 0;
+        }
+
+        private void ClearSearchField()
+        {
             SearchTxt.Text = string.Empty;
+        }
+
+        private void ClearAllFields()
+        {
+            ClearInputFields();
+            ClearSearchField();
         }
 
         private async void RefreshGridData()
@@ -51,7 +69,7 @@ namespace Kai.UI
 
             IngredientsGrid.AutoGenerateColumns = false;
 
-            DataGridViewColumn[] columns = new DataGridViewColumn[8];
+            DataGridViewColumn[] columns = new DataGridViewColumn[9];
             columns[0] = new DataGridViewTextBoxColumn() { DataPropertyName = "ID", Visible = false };
             columns[1] = new DataGridViewTextBoxColumn() { DataPropertyName = "Name", HeaderText = "Name" };
             columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "Type", HeaderText = "Type" };
@@ -60,6 +78,7 @@ namespace Kai.UI
             columns[5] = new DataGridViewTextBoxColumn() { DataPropertyName = "PricePer100g", HeaderText = "Price (100g)" };
             columns[6] = new DataGridViewTextBoxColumn() { DataPropertyName = "KcalPer100g", HeaderText = "Kcal (100g)" };
             columns[7] = new DataGridViewButtonColumn() { Text = "Delete", Name = "DeleteBtn", HeaderText = "", UseColumnTextForButtonValue = true };
+            columns[8] = new DataGridViewButtonColumn() { Text = "Edit", Name = "EditBtn", HeaderText = "", UseColumnTextForButtonValue = true };
 
             IngredientsGrid.Columns.Clear();
             IngredientsGrid.Columns.AddRange(columns);
@@ -120,6 +139,21 @@ namespace Kai.UI
             return isValid;
         }
 
+        private void FillFormForEdit(Ingredient clickedIngredient)
+        {
+            _ingredientToEditID = clickedIngredient.Id;
+
+            NameTxt.Text = clickedIngredient.Name;
+            TypeDrop.Text = clickedIngredient.Type;
+            QuantityNum.Value = clickedIngredient.Quantity;
+            UnitOfMeasurementDrop.Text = clickedIngredient.UnitOfMeasurement;
+            KcalPer100gNum.Value = clickedIngredient.KcalPer100g;
+            PricePer100gNum.Value = clickedIngredient.PricePer100g;
+
+            AddToKeteBtn.Visible = false;
+            EditIngredientBtn.Visible = true;
+        }
+
         private async void AddToKeteBtn_Click(object sender, EventArgs e)
         {
             if (!IsValid())
@@ -155,9 +189,30 @@ namespace Kai.UI
             {
                 Ingredient clickedIngredient = (Ingredient)IngredientsGrid.Rows[e.RowIndex].DataBoundItem;
 
-                await _ingredientsRepository.DeleteIngredient(clickedIngredient);
+                if (IngredientsGrid.CurrentCell.OwningColumn.Name == "DeleteBtn")
+                {
+                    await _ingredientsRepository.DeleteIngredient(clickedIngredient);
+                    ClearAllFields();
+                }
+                else if (IngredientsGrid.CurrentCell.OwningColumn.Name == "EditBtn")
+                {
+                    FillFormForEdit(clickedIngredient);
+                }
+
                 RefreshGridData();
             }
+        }
+
+        private async void EditIngredientBtn_Click(object sender, EventArgs e)
+        {
+            if (!IsValid())
+                return;
+
+            Ingredient ingredient = new Ingredient(NameTxt.Text, TypeDrop.Text, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value, _ingredientToEditID);
+
+            await _ingredientsRepository.EditIngredient(ingredient);
+            ClearInputFields();
+            RefreshGridData();
         }
     }
 }

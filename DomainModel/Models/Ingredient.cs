@@ -16,7 +16,7 @@ namespace DomainModel.Models
         public decimal KcalPer100g { get; set; }
         public decimal PricePer100g { get; set; }
 
-        public Ingredient(string name, string type, decimal quantity, string unitOfMeasurement, decimal kcalPer100g, decimal pricePer100g)
+        public Ingredient(string name, string type, decimal quantity, string unitOfMeasurement, decimal kcalPer100g, decimal pricePer100g, int? id = null)
         {
             Name = name;
             Type = type;
@@ -24,6 +24,8 @@ namespace DomainModel.Models
             UnitOfMeasurement = unitOfMeasurement;
             KcalPer100g = kcalPer100g;
             PricePer100g = pricePer100g;
+            if (id != null)
+                Id = (int)id;
         }
 
         public Ingredient() { }

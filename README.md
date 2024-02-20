@@ -1,11 +1,10 @@
 # Kai
 
-A fun little food app to help me learn to code.
+A fun little food app to help me learn to code. (Following the Codebeauty Academy Practical Programming Course)
 
 ## Description
 
-Recipe app allows users to track the ingredients they have in their pantry and find recipes that they can make with those ingredients.
-Users can also search for recipes by name and save their favorite recipes to their profile.
+TODO
 
 ## Authors
 
