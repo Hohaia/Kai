@@ -17,6 +17,8 @@ namespace Kai.UI
     {
         readonly IIngredientsRepository _ingredientsRepository;
         private int _ingredientToEditID;
+
+        // BACKGROUND METHODS //
         public IngredientsForm(IIngredientsRepository ingredientsRepository)
         {
             InitializeComponent();
@@ -94,19 +96,6 @@ namespace Kai.UI
                 isValid = false;
                 message += "'Name' is required\n\n";
             }
-            else
-            {
-                List<Ingredient> allIngredients = (List<Ingredient>)IngredientsGrid.DataSource;
-
-                foreach (Ingredient ingredient in allIngredients)
-                {
-                    if (ingredient.Name.ToLower() == NameTxt.Text.ToLower())
-                    {
-                        MessageBox.Show("An ingredient with this name already exists", "Invalid input");
-                        return false;
-                    }
-                }
-            }
             if (string.IsNullOrEmpty(TypeDrop.Text))
             {
                 isValid = false;
@@ -154,6 +143,7 @@ namespace Kai.UI
             EditIngredientBtn.Visible = true;
         }
 
+        // UI METHODS //
         private async void AddToKeteBtn_Click(object sender, EventArgs e)
         {
             if (!IsValid())
