@@ -96,6 +96,19 @@ namespace Kai.UI
                 isValid = false;
                 message += "'Name' is required\n\n";
             }
+            //TODO: RE-ENABLE THIS CHECK TO ALLOW FOR ANY TYPE OF DATABASE AND REMOVE THE NEED FOR CHECKS TO BE IN PLACE AT THE DB LEVEL
+            //else if (_ingredientToEditID == 0)
+            //{
+            //    List<Ingredient> allIngredients = (List<Ingredient>)IngredientsGrid.DataSource;
+            //    foreach (Ingredient ingredient in allIngredients)
+            //    {
+            //        if (ingredient.Name.ToLower() == NameTxt.Text.ToLower())
+            //        {
+            //            MessageBox.Show("An ingredient with this name already exists", "Invalid input");
+            //            return false;
+            //        }
+            //    }
+            //}
             if (string.IsNullOrEmpty(TypeDrop.Text))
             {
                 isValid = false;
