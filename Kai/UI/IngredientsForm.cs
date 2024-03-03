@@ -96,19 +96,19 @@ namespace Kai.UI
                 isValid = false;
                 message += "'Name' is required\n\n";
             }
-            else if (_ingredientToEditID == 0)
-            {
-                List<Ingredient> allIngredients = (List<Ingredient>)IngredientsGrid.DataSource;
-                foreach (Ingredient ingredient in allIngredients)
-                {
-                    if (ingredient.Name.ToLower() == NameTxt.Text.ToLower())
-                    {
-                        SearchTxt.Text = ingredient.Name;
-                        MessageBox.Show("An ingredient with this name already exists", "Invalid input");
-                        return false;
-                    }
-                }
-            }
+            //else if (_ingredientToEditID == 0)
+            //{
+            //    List<Ingredient> allIngredients = (List<Ingredient>)IngredientsGrid.DataSource;
+            //    foreach (Ingredient ingredient in allIngredients)
+            //    {
+            //        if (ingredient.Name.ToLower() == NameTxt.Text.ToLower())
+            //        {
+            //            SearchTxt.Text = ingredient.Name;
+            //            MessageBox.Show("An ingredient with this name already exists", "Invalid input");
+            //            return false;
+            //        }
+            //    }
+            //}
             if (string.IsNullOrEmpty(TypeDrop.Text))
             {
                 isValid = false;
