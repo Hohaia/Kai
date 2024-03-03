@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using DataAccessLayer.Contracts;
 using DomainModel.Models;
-using Utility.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -10,6 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utility.Logging;
 
 namespace DataAccessLayer.Repositories
 {
