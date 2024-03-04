@@ -17,12 +17,14 @@ namespace Kai.UI
     {
         readonly IIngredientsRepository _ingredientsRepository;
         private int _ingredientToEditID;
+        private bool _errorOccured = false;
 
         // BACKGROUND METHODS //
         public IngredientsForm(IIngredientsRepository ingredientsRepository)
         {
             InitializeComponent();
             _ingredientsRepository = ingredientsRepository;
+            _ingredientsRepository.OnError += OnErrorOccured;
         }
 
         private void IngredientsForm_Load(object sender, EventArgs e)
@@ -32,6 +34,14 @@ namespace Kai.UI
 
             AddToKeteBtn.Visible = true;
             EditIngredientBtn.Visible = false;
+        }
+
+        private void OnErrorOccured(string errorMessage)
+        {
+            _errorOccured = true;
+            if (errorMessage == "That ingredient already exists in the database!")
+                SearchTxt.Text = NameTxt.Text;
+            MessageBox.Show(errorMessage);
         }
 
         private void ClearInputFields()
@@ -96,19 +106,6 @@ namespace Kai.UI
                 isValid = false;
                 message += "'Name' is required\n\n";
             }
-            //else if (_ingredientToEditID == 0)
-            //{
-            //    List<Ingredient> allIngredients = (List<Ingredient>)IngredientsGrid.DataSource;
-            //    foreach (Ingredient ingredient in allIngredients)
-            //    {
-            //        if (ingredient.Name.ToLower() == NameTxt.Text.ToLower())
-            //        {
-            //            SearchTxt.Text = ingredient.Name;
-            //            MessageBox.Show("An ingredient with this name already exists", "Invalid input");
-            //            return false;
-            //        }
-            //    }
-            //}
             if (string.IsNullOrEmpty(TypeDrop.Text))
             {
                 isValid = false;
@@ -159,6 +156,7 @@ namespace Kai.UI
         // UI METHODS //
         private async void AddToKeteBtn_Click(object sender, EventArgs e)
         {
+            _errorOccured = false;
             if (!IsValid())
                 return;
 
@@ -168,7 +166,9 @@ namespace Kai.UI
             await _ingredientsRepository.AddIngredient(ingredient);
             AddToKeteBtn.Enabled = true;
 
-            ClearAllFields();
+            if (!_errorOccured)
+                ClearAllFields();
+            else ClearInputFields();
             RefreshGridData();
         }
 

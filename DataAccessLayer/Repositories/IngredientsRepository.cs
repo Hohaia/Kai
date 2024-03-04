@@ -15,6 +15,16 @@ namespace DataAccessLayer.Repositories
 {
     public class IngredientsRepository : IIngredientsRepository
     {
+        public event Action<string> OnError;
+
+        private void ErrorOccured(string errorMessage, Exception ex)
+        {
+            if (OnError != null)
+                OnError.Invoke(errorMessage);
+
+            Logger.LogError(DateTime.Now.ToString(), ex.Message);
+        }
+
         public async Task AddIngredient(Ingredient ingredient)
         {
             try
@@ -31,21 +41,15 @@ namespace DataAccessLayer.Repositories
             {
                 string errorMessage = "";
                 if (ex.Number == 2627)
-                {
-                    errorMessage = "That ingredient already exists in the database!"; //TODO: enter the duplicate name into the search field
-                    Logger.LogError(DateTime.Now.ToString(), ex.Message);
-                }
+                    errorMessage = "That ingredient already exists in the database!";
                 else
-                {
                     errorMessage = "An error occurred in the database!";
-                    Logger.LogError(DateTime.Now.ToString(), ex.Message);
-                }
+                ErrorOccured(errorMessage, ex);
             }
             catch (Exception ex)
             {
                 string errorMessage = "An error occurred while adding an ingredient!";
-                //TODO: show error message to the user
-                Logger.LogError(DateTime.Now.ToString(), ex.Message);
+                ErrorOccured(errorMessage, ex);
             }
         }
 

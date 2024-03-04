@@ -13,7 +13,7 @@ namespace Utility.Logging
 
         public static void Log(string message)
         {
-            //TODO
+            //TODO implement other logs than just errors
         }
         public static void LogError(string timeStamp, string logMessage)
         {
