@@ -53,13 +53,15 @@ namespace DataAccessLayer.Repositories
             }
         }
 
-        public async Task<List<Ingredient>> GetIngredients(string? name = "")
+        public async Task<List<Ingredient>> GetIngredients(string? name = "", string? sortBy = "", string? sortOrder = "")
         {
             try
             {
                 string query = "select * from Ingredients";
                 if (!string.IsNullOrEmpty(name))
                     query += $" where Name like '{name}%'";
+                if (!string.IsNullOrEmpty(sortBy))
+                    query += $" order by {sortBy} {sortOrder}";
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
