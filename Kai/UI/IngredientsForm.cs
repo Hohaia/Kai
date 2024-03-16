@@ -18,8 +18,9 @@ namespace Kai.UI
         readonly IIngredientsRepository _ingredientsRepository;
         private int _ingredientToEditID;
         private bool _errorOccured = false;
+        private string _sortOrder = "asc";
+        private int _lastClickedColumnIndex = 0;
 
-        // BACKGROUND METHODS //
         public IngredientsForm(IIngredientsRepository ingredientsRepository)
         {
             InitializeComponent();
@@ -36,6 +37,7 @@ namespace Kai.UI
             EditIngredientBtn.Visible = false;
         }
 
+        // BACKGROUND METHODS //
         private void OnErrorOccured(string errorMessage)
         {
             _errorOccured = true;
@@ -69,9 +71,9 @@ namespace Kai.UI
             ClearSearchField();
         }
 
-        private async void RefreshGridData()
+        private async void RefreshGridData(string? sortBy = "", string? sortOrder = "")
         {
-            IngredientsGrid.DataSource = await _ingredientsRepository.GetIngredients(SearchTxt.Text);
+            IngredientsGrid.DataSource = await _ingredientsRepository.GetIngredients(SearchTxt.Text, sortBy, sortOrder);
         }
 
         private void CustomiseGridAppearance()
@@ -172,6 +174,28 @@ namespace Kai.UI
             RefreshGridData();
         }
 
+        private async void EditIngredientBtn_Click(object sender, EventArgs e)
+        {
+            if (!IsValid())
+                return;
+
+            Ingredient ingredient = new Ingredient(NameTxt.Text, TypeDrop.Text, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value, _ingredientToEditID);
+
+            await _ingredientsRepository.EditIngredient(ingredient);
+            ClearInputFields();
+            RefreshGridData();
+        }
+
+        private void addTypeBtn_Click(object sender, EventArgs e) //TODO:
+        {
+            //TODO: implement button to add an ingredient 'type' to the drop ingredientsList
+        }
+
+        private void ClearAllFieldsBtn_Click(object sender, EventArgs e)
+        {
+            ClearAllFields();
+        }
+
         private async void SearchTxt_TextChanged(object sender, EventArgs e)
         {
             int lengthBeforePause = SearchTxt.Text.Length;
@@ -179,11 +203,6 @@ namespace Kai.UI
 
             if (lengthBeforePause == SearchTxt.Text.Length)
                 RefreshGridData();
-        }
-
-        private void ClearAllFieldsBtn_Click(object sender, EventArgs e)
-        {
-            ClearAllFields();
         }
 
         private async void IngredientsGrid_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -201,21 +220,35 @@ namespace Kai.UI
                 {
                     FillFormForEdit(clickedIngredient);
                 }
-
                 RefreshGridData();
             }
         }
 
-        private async void EditIngredientBtn_Click(object sender, EventArgs e)
+        private void IngredientsGrid_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (!IsValid())
-                return;
+            string sortBy = "";
 
-            Ingredient ingredient = new Ingredient(NameTxt.Text, TypeDrop.Text, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value, _ingredientToEditID);
+            if (_lastClickedColumnIndex == e.ColumnIndex && _sortOrder == "asc")
+                _sortOrder = "desc";
+            else
+                _sortOrder = "asc";
 
-            await _ingredientsRepository.EditIngredient(ingredient);
-            ClearInputFields();
-            RefreshGridData();
+            if (e.ColumnIndex == 1)
+                sortBy = "Name";
+            if (e.ColumnIndex == 2)
+                sortBy = "Type";
+            if (e.ColumnIndex == 3)
+                sortBy = "Quantity";
+            if (e.ColumnIndex == 4)
+                sortBy = "UnitOfMeasurement";
+            if (e.ColumnIndex == 5)
+                sortBy = "PricePer100g";
+            if (e.ColumnIndex == 6)
+                sortBy = "KcalPer100g";
+
+            _lastClickedColumnIndex = e.ColumnIndex;
+            RefreshGridData(sortBy, _sortOrder);
         }
+
     }
 }

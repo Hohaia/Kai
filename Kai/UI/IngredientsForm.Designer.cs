@@ -45,6 +45,7 @@
             SearchTxt = new TextBox();
             ClearAllFieldsBtn = new Button();
             EditIngredientBtn = new Button();
+            AddTypeBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)QuantityNum).BeginInit();
             ((System.ComponentModel.ISupportInitialize)KcalPer100gNum).BeginInit();
             ((System.ComponentModel.ISupportInitialize)PricePer100gNum).BeginInit();
@@ -167,12 +168,14 @@
             // IngredientsGrid
             // 
             IngredientsGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            IngredientsGrid.EditMode = DataGridViewEditMode.EditProgrammatically;
             IngredientsGrid.Location = new Point(12, 60);
             IngredientsGrid.Name = "IngredientsGrid";
             IngredientsGrid.RowTemplate.Height = 25;
             IngredientsGrid.Size = new Size(763, 483);
             IngredientsGrid.TabIndex = 13;
             IngredientsGrid.CellClick += IngredientsGrid_CellClick;
+            IngredientsGrid.ColumnHeaderMouseClick += IngredientsGrid_ColumnHeaderMouseClick;
             // 
             // TypeDrop
             // 
@@ -181,7 +184,7 @@
             TypeDrop.Items.AddRange(new object[] { "Condiment", "Dairy", "Fruit", "Ingredient", "Liquid", "Meat", "Nut", "Spice", "Sweetener", "Vegetable" });
             TypeDrop.Location = new Point(908, 120);
             TypeDrop.Name = "TypeDrop";
-            TypeDrop.Size = new Size(303, 33);
+            TypeDrop.Size = new Size(193, 33);
             TypeDrop.Sorted = true;
             TypeDrop.TabIndex = 14;
             // 
@@ -214,11 +217,22 @@
             EditIngredientBtn.UseVisualStyleBackColor = true;
             EditIngredientBtn.Click += EditIngredientBtn_Click;
             // 
+            // AddTypeBtn
+            // 
+            AddTypeBtn.Location = new Point(1109, 120);
+            AddTypeBtn.Name = "AddTypeBtn";
+            AddTypeBtn.Size = new Size(102, 33);
+            AddTypeBtn.TabIndex = 19;
+            AddTypeBtn.Text = "Add Type";
+            AddTypeBtn.UseVisualStyleBackColor = true;
+            AddTypeBtn.Click += addTypeBtn_Click;
+            // 
             // IngredientsForm
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1224, 555);
+            Controls.Add(AddTypeBtn);
             Controls.Add(EditIngredientBtn);
             Controls.Add(ClearAllFieldsBtn);
             Controls.Add(SearchTxt);
@@ -268,5 +282,6 @@
         private TextBox SearchTxt;
         private Button ClearAllFieldsBtn;
         private Button EditIngredientBtn;
+        private Button AddTypeBtn;
     }
 }
