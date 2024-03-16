@@ -13,7 +13,7 @@ namespace DataAccessLayer.Contracts
     {
         public event Action<string> OnError;
         public Task AddIngredient(Ingredient ingredient);
-        public Task<List<Ingredient>> GetIngredients(string? name = "", string? sortBy = "", string? sortOrder = "");
+        public Task<List<Ingredient>> GetIngredients(string? nameSearch = "", string? sortBy = "", string? sortOrder = "");
         public Task DeleteIngredient(Ingredient ingredient);
         public Task EditIngredient(Ingredient ingredient);
     }
