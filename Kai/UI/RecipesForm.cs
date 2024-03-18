@@ -31,6 +31,11 @@ namespace Kai.UI
             RefreshRecipeTypes();
         }
 
+        private void RecipesForm_Activated(object sender, EventArgs e)
+        {
+            RefreshRecipeTypes();
+        }
+
         // BACKGROUND METHODS //
         private void OnErrorOccured(string errorMessage)
         {
@@ -50,5 +55,6 @@ namespace Kai.UI
             RecipeTypesForm form = _serviceProvider.GetRequiredService<RecipeTypesForm>();
             form.ShowDialog();
         }
+
     }
 }

@@ -44,6 +44,11 @@ namespace Kai.UI
             EditIngredientBtn.Visible = false;
         }
 
+        private void IngredientsForm_Activated(object sender, EventArgs e)
+        {
+            RefreshIngredientTypes();
+        }
+
         // BACKGROUND METHODS //
         private void OnErrorOccured(string errorMessage)
         {
