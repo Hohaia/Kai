@@ -1,0 +1,85 @@
+﻿using DataAccessLayer.Contracts;
+using DataAccessLayer.Repositories;
+using DomainModel.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Kai.UI
+{
+    public partial class RecipeTypesForm : Form
+    {
+        private readonly IRecipeTypesRepository _recipeTypesRepository;
+        private bool _errorOccured = false;
+
+        public RecipeTypesForm(IRecipeTypesRepository recipeTypesRepository)
+        {
+            InitializeComponent();
+            _recipeTypesRepository = recipeTypesRepository;
+            _recipeTypesRepository.OnError += OnErrorOccured;
+        }
+
+        private void RecipeTypesForm_Load(object sender, EventArgs e)
+        {
+            RefreshRecipeTypesList();
+        }
+
+        // BACKGROUND METHODS //
+        private void OnErrorOccured(string errorMessage)
+        {
+            _errorOccured = true;
+            MessageBox.Show(errorMessage);
+        }
+
+        private async void RefreshRecipeTypesList()
+        {
+            TypesLbx.DataSource = await _recipeTypesRepository.GetRecipeTypes();
+            TypesLbx.DisplayMember = "Name";
+        }
+
+        private bool IsValid()
+        {
+            bool isValid = true;
+            string message = "";
+
+            if (string.IsNullOrEmpty(NewTypeTxt.Text))
+            {
+                isValid = false;
+                message += "'Name' is required\n\n";
+            }
+
+            if (!isValid)
+                MessageBox.Show(message, "Invalid input");
+
+            return isValid;
+        }
+
+        private void ClearInputFields()
+        {
+            NewTypeTxt.Text = string.Empty;
+        }
+
+        // UI METHODS //
+        private async void AddTypeBtn_Click(object sender, EventArgs e)
+        {
+            _errorOccured = false;
+            if (!IsValid())
+                return;
+
+            RecipeType recipeType = new RecipeType(NewTypeTxt.Text);
+
+            AddTypeBtn.Enabled = false;
+            await _recipeTypesRepository.AddRecipeType(recipeType);
+            AddTypeBtn.Enabled = true;
+
+            ClearInputFields();
+            RefreshRecipeTypesList();
+        }
+    }
+}

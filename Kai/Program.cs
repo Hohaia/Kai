@@ -20,7 +20,8 @@ namespace Kai
             ServiceCollection services = ConfigureServices();
             ServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            var startForm = serviceProvider.GetRequiredService<IngredientsForm>();
+            //var startForm = serviceProvider.GetRequiredService<IngredientsForm>();
+            var startForm = serviceProvider.GetRequiredService<RecipesForm>();
             Application.Run(startForm);
         }
 
@@ -28,14 +29,14 @@ namespace Kai
         {
             ServiceCollection services = new ServiceCollection();
 
-            services.AddTransient<IIngredientsRepository>(_ => new IngredientsRepository()); // TODO: REMOVE THIS LINE AFTER RE-ENABLING THE TXT REPOSITORY
-
-            //if (ConfigurationManager.AppSettings["repositoryType"] == "txt")
-            //    services.AddTransient<IIngredientsRepository>(_ => new IngredientsTxtRepository());
-            //else
-            //    services.AddTransient<IIngredientsRepository>(_ => new IngredientsRepository());
+            services.AddTransient<IIngredientsRepository>(_ => new IngredientsRepository());
+            services.AddTransient<IIngredientTypesRepository>(_ => new IngredientTypesRepository());
+            services.AddTransient<IRecipeTypesRepository>(_ => new RecipeTypesRepository());
 
             services.AddTransient<IngredientsForm>();
+            services.AddTransient<IngredientTypesForm>();
+            services.AddTransient<RecipesForm>();
+            services.AddTransient<RecipeTypesForm>();
 
             return services;
         }

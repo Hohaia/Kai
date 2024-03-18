@@ -1,4 +1,8 @@
-﻿using System;
+﻿using DataAccessLayer.Contracts;
+using DataAccessLayer.Repositories;
+using DomainModel.Models;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,31 +11,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DataAccessLayer.Contracts;
-using DataAccessLayer.Repositories;
-using DomainModel.Models;
 
 namespace Kai.UI
 {
     public partial class IngredientsForm : Form
     {
-        readonly IIngredientsRepository _ingredientsRepository;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IIngredientsRepository _ingredientsRepository;
+        private readonly IIngredientTypesRepository _ingredientTypesRepository;
         private int _ingredientToEditID;
         private bool _errorOccured = false;
         private string _sortOrder = "asc";
         private int _lastClickedColumnIndex = 0;
 
-        public IngredientsForm(IIngredientsRepository ingredientsRepository)
+        public IngredientsForm(IServiceProvider serviceProvider, IIngredientsRepository ingredientsRepository, IIngredientTypesRepository ingredientTypesRepository)
         {
             InitializeComponent();
+            _serviceProvider = serviceProvider;
             _ingredientsRepository = ingredientsRepository;
             _ingredientsRepository.OnError += OnErrorOccured;
+            _ingredientTypesRepository = ingredientTypesRepository;
+            _ingredientTypesRepository.OnError += OnErrorOccured;
         }
 
         private void IngredientsForm_Load(object sender, EventArgs e)
         {
             RefreshGridData();
             CustomiseGridAppearance();
+            RefreshIngredientTypes();
 
             AddToKeteBtn.Visible = true;
             EditIngredientBtn.Visible = false;
@@ -155,6 +162,12 @@ namespace Kai.UI
             EditIngredientBtn.Visible = true;
         }
 
+        private async void RefreshIngredientTypes()
+        {
+            TypeDrop.DataSource = await _ingredientTypesRepository.GetIngredientTypes();
+            TypeDrop.DisplayMember = "Name";
+        }
+
         // UI METHODS //
         private async void AddToKeteBtn_Click(object sender, EventArgs e)
         {
@@ -186,9 +199,10 @@ namespace Kai.UI
             RefreshGridData();
         }
 
-        private void addTypeBtn_Click(object sender, EventArgs e) //TODO:
+        private void addTypeBtn_Click(object sender, EventArgs e)
         {
-            //TODO: implement button to add an ingredient 'type' to the drop ingredientsList
+            IngredientTypesForm form = _serviceProvider.GetRequiredService<IngredientTypesForm>();
+            form.ShowDialog();
         }
 
         private void ClearAllFieldsBtn_Click(object sender, EventArgs e)

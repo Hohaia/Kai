@@ -79,6 +79,7 @@
             AddTypeBtn.TabIndex = 3;
             AddTypeBtn.Text = "Add";
             AddTypeBtn.UseVisualStyleBackColor = true;
+            AddTypeBtn.Click += AddTypeBtn_Click;
             // 
             // label1
             // 
@@ -170,7 +171,7 @@
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1261, 631);
+            ClientSize = new Size(1261, 638);
             Controls.Add(ClearAllFieldsBtn);
             Controls.Add(RecipeIngredientsBtn);
             Controls.Add(AddRecipeBtn);
@@ -186,9 +187,10 @@
             Controls.Add(FilterDrop);
             Controls.Add(RecipesGrid);
             Font = new Font("Segoe UI", 14F, FontStyle.Regular, GraphicsUnit.Point);
-            Margin = new Padding(5, 5, 5, 5);
+            Margin = new Padding(5);
             Name = "RecipesForm";
             Text = "Recipes";
+            Load += RecipesForm_Load;
             ((System.ComponentModel.ISupportInitialize)RecipesGrid).EndInit();
             ((System.ComponentModel.ISupportInitialize)ImageBox).EndInit();
             ResumeLayout(false);

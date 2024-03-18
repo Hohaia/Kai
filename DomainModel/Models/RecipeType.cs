@@ -10,5 +10,14 @@ namespace DomainModel.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+
+        public RecipeType(string name, int? id = null)
+        {
+            Name = name;
+            if (id != null)
+                Id = (int)id;
+        }
+
+        public RecipeType() { }
     }
 }
