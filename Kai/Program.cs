@@ -20,8 +20,8 @@ namespace Kai
             ServiceCollection services = ConfigureServices();
             ServiceProvider serviceProvider = services.BuildServiceProvider();
 
-            var startForm = serviceProvider.GetRequiredService<IngredientsForm>();
-            //var startForm = serviceProvider.GetRequiredService<RecipesForm>();
+            //var startForm = serviceProvider.GetRequiredService<IngredientsForm>();
+            var startForm = serviceProvider.GetRequiredService<RecipesForm>();
             Application.Run(startForm);
         }
 

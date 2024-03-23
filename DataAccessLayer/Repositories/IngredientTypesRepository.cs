@@ -21,7 +21,7 @@ namespace DataAccessLayer.Repositories
             if (OnError != null)
                 OnError.Invoke(errorMessage);
 
-            Logger.LogError(DateTime.Now.ToString(), ex.Message);
+            Logger.Log(DateTime.Now.ToString(), ex.Message, "ERROR");
         }
 
         public async Task AddIngredientType(IngredientType ingredientType)

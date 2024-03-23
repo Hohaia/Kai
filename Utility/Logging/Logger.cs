@@ -11,15 +11,15 @@ namespace Utility.Logging
     {
         static string _filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Kai", "Log.csv");
 
-        public static void Log(string message)
+        public static void Log(string timeStamp, string logMessage, string? logType = "")
         {
-            //TODO implement other logs than just errors
-        }
-        public static void LogError(string timeStamp, string logMessage)
-        {
-            string logType = "ERROR";
-            logMessage = logMessage.Replace("\r", "").Replace("\n", "").Replace("The statement has been terminated.", "");
+            logMessage = logMessage.Replace("\r", "").Replace("\n", "").Replace(",", " |").Replace("The statement has been terminated.", "");
 
+            WriteLog(timeStamp, logType, logMessage);
+        }
+
+        private static void WriteLog(string timeStamp, string logType, string logMessage)
+        {
             using (StreamWriter sw = File.AppendText(_filePath))
             {
                 sw.WriteLine($"{timeStamp},{logType},{logMessage}");

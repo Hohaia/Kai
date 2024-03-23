@@ -225,7 +225,7 @@
             AddTypeBtn.TabIndex = 19;
             AddTypeBtn.Text = "Add Type";
             AddTypeBtn.UseVisualStyleBackColor = true;
-            AddTypeBtn.Click += addTypeBtn_Click;
+            AddTypeBtn.Click += AddTypeBtn_Click;
             // 
             // IngredientsForm
             // 
@@ -254,7 +254,6 @@
             Margin = new Padding(5);
             Name = "IngredientsForm";
             Text = "My Kete";
-            Activated += IngredientsForm_Activated;
             Load += IngredientsForm_Load;
             ((System.ComponentModel.ISupportInitialize)QuantityNum).EndInit();
             ((System.ComponentModel.ISupportInitialize)KcalPer100gNum).EndInit();

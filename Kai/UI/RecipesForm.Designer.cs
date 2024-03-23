@@ -190,7 +190,6 @@
             Margin = new Padding(5);
             Name = "RecipesForm";
             Text = "Recipes";
-            Activated += RecipesForm_Activated;
             Load += RecipesForm_Load;
             ((System.ComponentModel.ISupportInitialize)RecipesGrid).EndInit();
             ((System.ComponentModel.ISupportInitialize)ImageBox).EndInit();

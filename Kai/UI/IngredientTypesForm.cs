@@ -16,13 +16,12 @@ namespace Kai.UI
     public partial class IngredientTypesForm : Form
     {
         private readonly IIngredientTypesRepository _ingredientTypesRepository;
-        private bool _errorOccured = false;
 
         public IngredientTypesForm(IIngredientTypesRepository ingredientTypesRepository)
         {
             InitializeComponent();
             _ingredientTypesRepository = ingredientTypesRepository;
-            _ingredientTypesRepository.OnError += OnErrorOccured;
+            _ingredientTypesRepository.OnError += (errorMessage) => MessageBox.Show(errorMessage);
         }
 
         private void IngredientTypesForm_Load(object sender, EventArgs e)
@@ -31,12 +30,6 @@ namespace Kai.UI
         }
 
         // BACKGROUND METHODS //
-        private void OnErrorOccured(string errorMessage)
-        {
-            _errorOccured = true;
-            MessageBox.Show(errorMessage);
-        }
-
         private async void RefreshIngredientTypesList()
         {
             TypesLbx.DataSource = await _ingredientTypesRepository.GetIngredientTypes();
@@ -68,7 +61,6 @@ namespace Kai.UI
         // UI METHODS //
         private async void AddTypeBtn_Click(object sender, EventArgs e)
         {
-            _errorOccured = false;
             if (!IsValid())
                 return;
 

@@ -14,8 +14,6 @@ namespace DomainModel.Models
         public RecipeType(string name, int? id = null)
         {
             Name = name;
-            if (id != null)
-                Id = (int)id;
         }
 
         public RecipeType() { }

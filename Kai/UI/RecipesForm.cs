@@ -16,14 +16,13 @@ namespace Kai.UI
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IRecipeTypesRepository _recipeTypesRepository;
-        private bool _errorOccured = false;
 
         public RecipesForm(IServiceProvider serviceProvider, IRecipeTypesRepository recipeTypesRepository)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
             _recipeTypesRepository = recipeTypesRepository;
-            _recipeTypesRepository.OnError += OnErrorOccured;
+            _recipeTypesRepository.OnError += (errorMessage) => MessageBox.Show(errorMessage);
         }
 
         private void RecipesForm_Load(object sender, EventArgs e)
@@ -31,18 +30,7 @@ namespace Kai.UI
             RefreshRecipeTypes();
         }
 
-        private void RecipesForm_Activated(object sender, EventArgs e)
-        {
-            RefreshRecipeTypes();
-        }
-
         // BACKGROUND METHODS //
-        private void OnErrorOccured(string errorMessage)
-        {
-            _errorOccured = true;
-            MessageBox.Show(errorMessage);
-        }
-
         private async void RefreshRecipeTypes()
         {
             TypeDrop.DataSource = await _recipeTypesRepository.GetRecipeTypes();
@@ -53,8 +41,8 @@ namespace Kai.UI
         private void AddTypeBtn_Click(object sender, EventArgs e)
         {
             RecipeTypesForm form = _serviceProvider.GetRequiredService<RecipeTypesForm>();
+            form.FormClosed += (sender, e) => RefreshRecipeTypes();
             form.ShowDialog();
         }
-
     }
 }

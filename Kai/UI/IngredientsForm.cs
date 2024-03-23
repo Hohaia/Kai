@@ -44,11 +44,6 @@ namespace Kai.UI
             EditIngredientBtn.Visible = false;
         }
 
-        private void IngredientsForm_Activated(object sender, EventArgs e)
-        {
-            RefreshIngredientTypes();
-        }
-
         // BACKGROUND METHODS //
         private void OnErrorOccured(string errorMessage)
         {
@@ -204,9 +199,10 @@ namespace Kai.UI
             RefreshGridData();
         }
 
-        private void addTypeBtn_Click(object sender, EventArgs e)
+        private void AddTypeBtn_Click(object sender, EventArgs e)
         {
             IngredientTypesForm form = _serviceProvider.GetRequiredService<IngredientTypesForm>();
+            form.FormClosed += (sender, e) => RefreshIngredientTypes();
             form.ShowDialog();
         }
 
