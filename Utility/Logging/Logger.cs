@@ -11,8 +11,9 @@ namespace Utility.Logging
     {
         static string _filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Kai", "Log.csv");
 
-        public static void Log(string timeStamp, string logMessage, string? logType = "")
+        public static void Log(string logMessage, string? logType = "")
         {
+            string timeStamp = DateTime.Now.ToString();
             logMessage = logMessage.Replace("\r", "").Replace("\n", "").Replace(",", " |").Replace("The statement has been terminated.", "");
 
             WriteLog(timeStamp, logType, logMessage);
