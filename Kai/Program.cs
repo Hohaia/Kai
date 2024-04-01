@@ -31,6 +31,7 @@ namespace Kai
 
             services.AddTransient<IIngredientsRepository>(_ => new IngredientsRepository());
             services.AddTransient<IIngredientTypesRepository>(_ => new IngredientTypesRepository());
+            services.AddTransient<IRecipesRepository>(_ => new RecipesRepository());
             services.AddTransient<IRecipeTypesRepository>(_ => new RecipeTypesRepository());
 
             services.AddTransient<IngredientsForm>();

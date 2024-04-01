@@ -49,6 +49,7 @@
             // RecipesGrid
             // 
             RecipesGrid.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            RecipesGrid.EditMode = DataGridViewEditMode.EditProgrammatically;
             RecipesGrid.Location = new Point(12, 56);
             RecipesGrid.Name = "RecipesGrid";
             RecipesGrid.RowTemplate.Height = 25;
@@ -148,6 +149,7 @@
             AddRecipeBtn.TabIndex = 11;
             AddRecipeBtn.Text = "Add Recipe";
             AddRecipeBtn.UseVisualStyleBackColor = true;
+            AddRecipeBtn.Click += AddRecipeBtn_Click;
             // 
             // RecipeIngredientsBtn
             // 
@@ -166,6 +168,7 @@
             ClearAllFieldsBtn.TabIndex = 13;
             ClearAllFieldsBtn.Text = "Clear All Flields";
             ClearAllFieldsBtn.UseVisualStyleBackColor = true;
+            ClearAllFieldsBtn.Click += ClearAllFieldsBtn_Click;
             // 
             // RecipesForm
             // 

@@ -29,8 +29,8 @@ namespace DataAccessLayer.Repositories
         {
             try
             {
-                string query = @"insert into Ingredients (Name, Quantity, UnitOfMeasurement, KcalPer100g, PricePer100g, Type)
-                    values (@Name, @Quantity, @UnitOfMeasurement, @KcalPer100g, @PricePer100g, @Type)";
+                string query = @"insert into Ingredients (Name, Quantity, UnitOfMeasurement, KcalPer100g, PricePer100g, IngredientTypeId)
+                    values (@Name, @Quantity, @UnitOfMeasurement, @KcalPer100g, @PricePer100g, @IngredientTypeId)";
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
@@ -105,7 +105,7 @@ namespace DataAccessLayer.Repositories
                             UnitOfMeasurement = @UnitOfMeasurement,
                             KcalPer100g = @KcalPer100g,
                             PricePer100g = @PricePer100g,
-                            Type = @Type
+                            IngredientTypeId = @IngredientTypeId
                             where Id = @Id";
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {

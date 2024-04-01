@@ -57,45 +57,45 @@
             label1.AutoSize = true;
             label1.Location = new Point(781, 66);
             label1.Name = "label1";
-            label1.Size = new Size(62, 25);
+            label1.Size = new Size(66, 25);
             label1.TabIndex = 0;
-            label1.Text = "Name";
+            label1.Text = "Name:";
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.Location = new Point(781, 123);
             label2.Name = "label2";
-            label2.Size = new Size(51, 25);
+            label2.Size = new Size(55, 25);
             label2.TabIndex = 1;
-            label2.Text = "Type";
+            label2.Text = "Type:";
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Location = new Point(781, 184);
             label3.Name = "label3";
-            label3.Size = new Size(84, 25);
+            label3.Size = new Size(88, 25);
             label3.TabIndex = 2;
-            label3.Text = "Quantity";
+            label3.Text = "Quantity:";
             // 
             // label4
             // 
             label4.AutoSize = true;
             label4.Location = new Point(781, 245);
             label4.Name = "label4";
-            label4.Size = new Size(112, 25);
+            label4.Size = new Size(116, 25);
             label4.TabIndex = 3;
-            label4.Text = "Kcal (/100g)";
+            label4.Text = "Kcal (/100g):";
             // 
             // label5
             // 
             label5.AutoSize = true;
             label5.Location = new Point(781, 307);
             label5.Name = "label5";
-            label5.Size = new Size(119, 25);
+            label5.Size = new Size(123, 25);
             label5.TabIndex = 4;
-            label5.Text = "Price (/100g)";
+            label5.Text = "Price (/100g):";
             // 
             // NameTxt
             // 
@@ -223,7 +223,7 @@
             AddTypeBtn.Name = "AddTypeBtn";
             AddTypeBtn.Size = new Size(102, 33);
             AddTypeBtn.TabIndex = 19;
-            AddTypeBtn.Text = "Add Type";
+            AddTypeBtn.Text = "Add";
             AddTypeBtn.UseVisualStyleBackColor = true;
             AddTypeBtn.Click += AddTypeBtn_Click;
             // 

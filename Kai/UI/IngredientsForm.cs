@@ -20,7 +20,7 @@ namespace Kai.UI
         private readonly IIngredientsRepository _ingredientsRepository;
         private readonly IIngredientTypesRepository _ingredientTypesRepository;
         private int _ingredientToEditID;
-        private bool _errorOccured = false;
+        private bool _errorOccured = false; // used to determine whether to clear ALL fields or to clear INPUT fields only
         private string _sortOrder = "asc";
         private int _lastClickedColumnIndex = 0;
 
@@ -29,8 +29,9 @@ namespace Kai.UI
             InitializeComponent();
             _serviceProvider = serviceProvider;
             _ingredientsRepository = ingredientsRepository;
-            _ingredientsRepository.OnError += OnErrorOccured;
             _ingredientTypesRepository = ingredientTypesRepository;
+
+            _ingredientsRepository.OnError += OnErrorOccured;
             _ingredientTypesRepository.OnError += OnErrorOccured;
         }
 
@@ -93,7 +94,7 @@ namespace Kai.UI
             DataGridViewColumn[] columns = new DataGridViewColumn[9];
             columns[0] = new DataGridViewTextBoxColumn() { DataPropertyName = "ID", Visible = false };
             columns[1] = new DataGridViewTextBoxColumn() { DataPropertyName = "Name", HeaderText = "Name" };
-            columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "Type", HeaderText = "Type" };
+            columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "IngredientTypeId", HeaderText = "Type Id" }; // TODO: DISPLAY INGREDIENT TYPE "NAME"
             columns[3] = new DataGridViewTextBoxColumn() { DataPropertyName = "Quantity", HeaderText = "Quantity" };
             columns[4] = new DataGridViewTextBoxColumn() { DataPropertyName = "UnitOfMeasurement", HeaderText = "Unit" };
             columns[5] = new DataGridViewTextBoxColumn() { DataPropertyName = "PricePer100g", HeaderText = "Price (100g)" };
@@ -113,32 +114,32 @@ namespace Kai.UI
             if (string.IsNullOrEmpty(NameTxt.Text))
             {
                 isValid = false;
-                message += "'Name' is required\n\n";
+                message += "'Name' is required.\n\n";
             }
             if (string.IsNullOrEmpty(TypeDrop.Text))
             {
                 isValid = false;
-                message += "'Type' is required\n\n";
+                message += "'Type' is required.\n\n";
             }
             if (QuantityNum.Value <= 0)
             {
                 isValid = false;
-                message += "'Quantity' is required\n\n";
+                message += "'Quantity' is required.\n\n";
             }
             if (string.IsNullOrEmpty(UnitOfMeasurementDrop.Text))
             {
                 isValid = false;
-                message += "'Unit of Measurement' is required\n\n";
+                message += "'Unit of Measurement' is required.\n\n";
             }
             if (KcalPer100gNum.Value < 0)
             {
                 isValid = false;
-                message += "'Kcal per 100g' cannot be less than 0\n\n";
+                message += "'Kcal per 100g' cannot be less than 0.\n\n";
             }
             if (PricePer100gNum.Value < 0)
             {
                 isValid = false;
-                message += "'Price' cannot be less than 0\n\n";
+                message += "'Price' cannot be less than 0.\n\n";
             }
 
             if (!isValid)
@@ -147,12 +148,16 @@ namespace Kai.UI
             return isValid;
         }
 
-        private void FillFormForEdit(Ingredient clickedIngredient)
+        private async void FillFormForEdit(Ingredient clickedIngredient)
         {
             _ingredientToEditID = clickedIngredient.Id;
+            int ingredientTypeId = clickedIngredient.IngredientTypeId;
+            List<IngredientType> ingredientTypes = await _ingredientTypesRepository.GetIngredientTypes();
+            var ingredientType = ingredientTypes.FirstOrDefault(Item => Item.Id == ingredientTypeId);
+
 
             NameTxt.Text = clickedIngredient.Name;
-            TypeDrop.Text = clickedIngredient.Type;
+            TypeDrop.Text = ingredientType.Name;
             QuantityNum.Value = clickedIngredient.Quantity;
             UnitOfMeasurementDrop.Text = clickedIngredient.UnitOfMeasurement;
             KcalPer100gNum.Value = clickedIngredient.KcalPer100g;
@@ -166,16 +171,19 @@ namespace Kai.UI
         {
             TypeDrop.DataSource = await _ingredientTypesRepository.GetIngredientTypes();
             TypeDrop.DisplayMember = "Name";
+            TypeDrop.SelectedItem = null;
         }
 
         // UI METHODS //
         private async void AddToKeteBtn_Click(object sender, EventArgs e)
         {
             _errorOccured = false;
+            int ingredientTypeId = ((IngredientType)TypeDrop.SelectedItem).Id;
+
             if (!IsValid())
                 return;
 
-            Ingredient ingredient = new Ingredient(NameTxt.Text, TypeDrop.Text, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value);
+            Ingredient ingredient = new Ingredient(NameTxt.Text, ingredientTypeId, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value);
 
             AddToKeteBtn.Enabled = false;
             await _ingredientsRepository.AddIngredient(ingredient);
@@ -189,10 +197,12 @@ namespace Kai.UI
 
         private async void EditIngredientBtn_Click(object sender, EventArgs e)
         {
+            int ingredientTypeId = ((IngredientType)TypeDrop.SelectedItem).Id;
+
             if (!IsValid())
                 return;
 
-            Ingredient ingredient = new Ingredient(NameTxt.Text, TypeDrop.Text, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value, _ingredientToEditID);
+            Ingredient ingredient = new Ingredient(NameTxt.Text, ingredientTypeId, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value, _ingredientToEditID);
 
             await _ingredientsRepository.EditIngredient(ingredient);
             ClearInputFields();
@@ -251,7 +261,7 @@ namespace Kai.UI
             if (e.ColumnIndex == 1)
                 sortBy = "Name";
             if (e.ColumnIndex == 2)
-                sortBy = "Type";
+                sortBy = "IngredientTypeId";
             if (e.ColumnIndex == 3)
                 sortBy = "Quantity";
             if (e.ColumnIndex == 4)
