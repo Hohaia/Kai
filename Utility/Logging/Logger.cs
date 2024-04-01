@@ -7,23 +7,25 @@ using System.Threading.Tasks;
 
 namespace Utility.Logging
 {
+    public enum LogType
+    {
+        INFO,
+        SQL_QUERY,
+        ERROR,
+        CRITICAL
+    }
+
     public static class Logger
     {
         static string _filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Kai", "Log.csv");
 
-        public static void Log(string logMessage, string? logType = "")
+        public static void Log(string logMessage, LogType? type = LogType.INFO)
         {
-            string timeStamp = DateTime.Now.ToString();
             logMessage = logMessage.Replace("\r", "").Replace("\n", "").Replace(",", " |").Replace("The statement has been terminated.", "");
 
-            WriteLog(timeStamp, logType, logMessage);
-        }
-
-        private static void WriteLog(string timeStamp, string logType, string logMessage)
-        {
             using (StreamWriter sw = File.AppendText(_filePath))
             {
-                sw.WriteLine($"{timeStamp},{logType},{logMessage}");
+                sw.WriteLine($"{type},{DateTime.Now},{logMessage}");
             }
         }
     }

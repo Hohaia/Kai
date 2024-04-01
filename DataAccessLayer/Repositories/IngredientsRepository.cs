@@ -22,7 +22,7 @@ namespace DataAccessLayer.Repositories
             if (OnError != null)
                 OnError.Invoke(errorMessage);
 
-            Logger.Log(ex.Message, "ERROR");
+            Logger.Log(ex.Message, LogType.ERROR);
         }
 
         public async Task AddIngredient(Ingredient ingredient)
@@ -35,7 +35,7 @@ namespace DataAccessLayer.Repositories
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
                     await connection.ExecuteAsync(query, ingredient);
-                    Logger.Log(query, "SQL Query");
+                    Logger.Log(query, LogType.SQL_QUERY);
                 }
             }
             catch (SqlException ex)
@@ -111,7 +111,7 @@ namespace DataAccessLayer.Repositories
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
                     await connection.ExecuteAsync(query, ingredient);
-                    Logger.Log(query, "SQL Query");
+                    Logger.Log(query, LogType.SQL_QUERY);
                 }
             }
             catch (Exception ex)
