@@ -181,7 +181,6 @@
             // 
             TypeDrop.DropDownStyle = ComboBoxStyle.DropDownList;
             TypeDrop.FormattingEnabled = true;
-            TypeDrop.Items.AddRange(new object[] { "Condiment", "Dairy", "Fruit", "Ingredient", "Liquid", "Meat", "Nut", "Spice", "Sweetener", "Vegetable" });
             TypeDrop.Location = new Point(908, 120);
             TypeDrop.Name = "TypeDrop";
             TypeDrop.Size = new Size(193, 33);
