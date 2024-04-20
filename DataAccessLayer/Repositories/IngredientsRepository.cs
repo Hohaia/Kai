@@ -1,14 +1,15 @@
 ﻿using Dapper;
 using DataAccessLayer.Contracts;
+using DataAccessLayer.CustomQueryResults;
 using DomainModel.Models;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
 using Utility.Logging;
 
 namespace DataAccessLayer.Repositories
@@ -30,7 +31,7 @@ namespace DataAccessLayer.Repositories
             try
             {
                 string query = @"insert into Ingredients (Name, Quantity, UnitOfMeasurement, KcalPer100g, PricePer100g, IngredientTypeId)
-                    values (@Name, @Quantity, @UnitOfMeasurement, @KcalPer100g, @PricePer100g, @IngredientTypeId)";
+                                values (@Name, @Quantity, @UnitOfMeasurement, @KcalPer100g, @PricePer100g, @IngredientTypeId)";
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
@@ -54,11 +55,14 @@ namespace DataAccessLayer.Repositories
             }
         }
 
-        public async Task<List<Ingredient>> GetIngredients(string? nameSearch = "", string? sortBy = "", string? sortOrder = "")
+        public async Task<List<IngredientWithType>> GetIngredients(string? nameSearch = "", string? sortBy = "", string? sortOrder = "")
         {
             try
             {
-                string query = "select * from Ingredients";
+                string query = @"SELECT i.Id, i.Name, it.Name AS 'Type', i.Quantity, i.UnitOfMeasurement, i.KcalPer100g, i.PricePer100g
+                                FROM
+                                Ingredients AS i JOIN IngredientTypes AS it
+                                ON i.IngredientTypeId = it.Id";
                 if (!string.IsNullOrEmpty(nameSearch))
                     query += $" where Name like '{nameSearch}%'";
                 if (!string.IsNullOrEmpty(sortBy))
@@ -66,18 +70,18 @@ namespace DataAccessLayer.Repositories
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
-                    return (await connection.QueryAsync<Ingredient>(query)).ToList();
+                    return (await connection.QueryAsync<IngredientWithType>(query)).ToList();
                 }
             }
             catch (Exception ex)
             {
                 string errorMessage = "An error occurred while retieving the ingredients!";
                 ErrorOccured(errorMessage, ex);
-                return new List<Ingredient>();
+                return new List<IngredientWithType>();
             }
         }
 
-        public async Task DeleteIngredient(Ingredient ingredient)
+        public async Task DeleteIngredient(IngredientWithType ingredient)
         {
             try
             {
@@ -100,14 +104,14 @@ namespace DataAccessLayer.Repositories
             try
             {
                 string query = @"update Ingredients
-                            set
-                            Name = @Name,
-                            Quantity = @Quantity,
-                            UnitOfMeasurement = @UnitOfMeasurement,
-                            KcalPer100g = @KcalPer100g,
-                            PricePer100g = @PricePer100g,
-                            IngredientTypeId = @IngredientTypeId
-                            where Id = @Id";
+                                set
+                                Name = @Name,
+                                Quantity = @Quantity,
+                                UnitOfMeasurement = @UnitOfMeasurement,
+                                KcalPer100g = @KcalPer100g,
+                                PricePer100g = @PricePer100g,
+                                IngredientTypeId = @IngredientTypeId
+                                where Id = @Id";
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
                     await connection.ExecuteAsync(query, ingredient);

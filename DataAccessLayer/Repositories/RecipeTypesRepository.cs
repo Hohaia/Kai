@@ -1,15 +1,15 @@
-﻿using DataAccessLayer.Contracts;
+﻿using Dapper;
+using DataAccessLayer.Contracts;
 using DomainModel.Models;
-using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dapper;
+using System;
 using Utility.Logging;
-using System.Globalization;
 
 namespace DataAccessLayer.Repositories
 {
@@ -29,7 +29,8 @@ namespace DataAccessLayer.Repositories
         {
             try
             {
-                string query = @"insert into RecipeTypes (Name) values (@Name)";
+                string query = @"INSERT INTO RecipeTypes (Name)
+                                VALUES (@Name)";
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {

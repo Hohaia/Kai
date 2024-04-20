@@ -2,7 +2,6 @@
 using DataAccessLayer.Repositories;
 using DomainModel.Models;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System;
 
 namespace Kai.UI
 {
@@ -39,9 +39,9 @@ namespace Kai.UI
         }
 
         // BACKGROUND METHODS //
-        private async void RefreshGridData()
+        private async void RefreshGridData(string? sortBy = "", string? sortOrder = "")
         {
-            RecipesGrid.DataSource = await _recipesRepository.GetRecipes();
+            RecipesGrid.DataSource = await _recipesRepository.GetRecipes(sortBy, sortOrder);
         }
 
         private async void RefreshRecipeTypes()
@@ -58,12 +58,13 @@ namespace Kai.UI
 
             RecipesGrid.AutoGenerateColumns = false;
 
-            DataGridViewColumn[] columns = new DataGridViewColumn[5];
+            DataGridViewColumn[] columns = new DataGridViewColumn[6];
             columns[0] = new DataGridViewTextBoxColumn() { DataPropertyName = "Id", Visible = false };
             columns[1] = new DataGridViewTextBoxColumn() { DataPropertyName = "Name", HeaderText = "Name" };
-            columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "RecipeTypeId", HeaderText = "Type ID" }; // TODO: DISPLAY RECIPE TYPE "NAME"
-            columns[3] = new DataGridViewButtonColumn() { Text = "Delete", Name = "DeleteBtn", HeaderText = "", UseColumnTextForButtonValue = true };
-            columns[4] = new DataGridViewButtonColumn() { Text = "Edit", Name = "EditBtn", HeaderText = "", UseColumnTextForButtonValue = true };
+            columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "Description", HeaderText = "Description" };
+            columns[3] = new DataGridViewTextBoxColumn() { DataPropertyName = "Type", HeaderText = "Type" };
+            columns[4] = new DataGridViewButtonColumn() { Text = "Delete", Name = "DeleteBtn", HeaderText = "", UseColumnTextForButtonValue = true };
+            columns[5] = new DataGridViewButtonColumn() { Text = "Edit", Name = "EditBtn", HeaderText = "", UseColumnTextForButtonValue = true };
 
             RecipesGrid.Columns.Clear();
             RecipesGrid.Columns.AddRange(columns);

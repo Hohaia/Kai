@@ -4,18 +4,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System;
 
-namespace DomainModel.Models
+namespace DataAccessLayer.CustomQueryResults
 {
-    public class IngredientType
+    public class RecipeWithType
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
-        public IngredientType(string name, int? id = null)
-        {
-            Name = name;
-        }
-
-        public IngredientType() { }
+        public string Description { get; set; }
+        public string Type { get; set; }
     }
 }

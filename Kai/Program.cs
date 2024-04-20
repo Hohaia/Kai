@@ -2,8 +2,8 @@ using DataAccessLayer.Contracts;
 using DataAccessLayer.Repositories;
 using Kai.UI;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Configuration;
+using System;
 
 namespace Kai
 {

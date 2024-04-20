@@ -1,8 +1,8 @@
 ﻿using DataAccessLayer.Contracts;
+using DataAccessLayer.CustomQueryResults;
 using DataAccessLayer.Repositories;
 using DomainModel.Models;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System;
 
 namespace Kai.UI
 {
@@ -94,7 +95,7 @@ namespace Kai.UI
             DataGridViewColumn[] columns = new DataGridViewColumn[9];
             columns[0] = new DataGridViewTextBoxColumn() { DataPropertyName = "ID", Visible = false };
             columns[1] = new DataGridViewTextBoxColumn() { DataPropertyName = "Name", HeaderText = "Name" };
-            columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "IngredientTypeId", HeaderText = "Type Id" }; // TODO: DISPLAY INGREDIENT TYPE "NAME"
+            columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "Type", HeaderText = "Type" };
             columns[3] = new DataGridViewTextBoxColumn() { DataPropertyName = "Quantity", HeaderText = "Quantity" };
             columns[4] = new DataGridViewTextBoxColumn() { DataPropertyName = "UnitOfMeasurement", HeaderText = "Unit" };
             columns[5] = new DataGridViewTextBoxColumn() { DataPropertyName = "PricePer100g", HeaderText = "Price (100g)" };
@@ -148,16 +149,16 @@ namespace Kai.UI
             return isValid;
         }
 
-        private async void FillFormForEdit(Ingredient clickedIngredient)
+        private async void FillFormForEdit(IngredientWithType clickedIngredient)
         {
             _ingredientToEditID = clickedIngredient.Id;
-            int ingredientTypeId = clickedIngredient.IngredientTypeId;
+            string ingredientTypeName = clickedIngredient.Type;
             List<IngredientType> ingredientTypes = await _ingredientTypesRepository.GetIngredientTypes();
-            var ingredientType = ingredientTypes.FirstOrDefault(Item => Item.Id == ingredientTypeId);
+            var ingredientType = ingredientTypes.FirstOrDefault(Item => Item.Name == ingredientTypeName);
 
 
             NameTxt.Text = clickedIngredient.Name;
-            TypeDrop.Text = ingredientType.Name;
+            TypeDrop.Text = clickedIngredient.Type;
             QuantityNum.Value = clickedIngredient.Quantity;
             UnitOfMeasurementDrop.Text = clickedIngredient.UnitOfMeasurement;
             KcalPer100gNum.Value = clickedIngredient.KcalPer100g;
@@ -178,11 +179,11 @@ namespace Kai.UI
         private async void AddToKeteBtn_Click(object sender, EventArgs e)
         {
             _errorOccured = false;
-            int ingredientTypeId = ((IngredientType)TypeDrop.SelectedItem).Id;
 
             if (!IsValid())
                 return;
 
+            int ingredientTypeId = ((IngredientType)TypeDrop.SelectedItem).Id;
             Ingredient ingredient = new Ingredient(NameTxt.Text, ingredientTypeId, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value);
 
             AddToKeteBtn.Enabled = false;
@@ -197,11 +198,11 @@ namespace Kai.UI
 
         private async void EditIngredientBtn_Click(object sender, EventArgs e)
         {
-            int ingredientTypeId = ((IngredientType)TypeDrop.SelectedItem).Id;
 
             if (!IsValid())
                 return;
 
+            int ingredientTypeId = ((IngredientType)TypeDrop.SelectedItem).Id;
             Ingredient ingredient = new Ingredient(NameTxt.Text, ingredientTypeId, QuantityNum.Value, UnitOfMeasurementDrop.Text, KcalPer100gNum.Value, PricePer100gNum.Value, _ingredientToEditID);
 
             await _ingredientsRepository.EditIngredient(ingredient);
@@ -234,16 +235,16 @@ namespace Kai.UI
         {
             if (e.RowIndex >= 0 && IngredientsGrid.CurrentCell is DataGridViewButtonCell)
             {
-                Ingredient clickedIngredient = (Ingredient)IngredientsGrid.Rows[e.RowIndex].DataBoundItem;
+                IngredientWithType clickedIngredient = (IngredientWithType)IngredientsGrid.Rows[e.RowIndex].DataBoundItem; // TODO: must work with IngredientWithType class
 
                 if (IngredientsGrid.CurrentCell.OwningColumn.Name == "DeleteBtn")
                 {
-                    await _ingredientsRepository.DeleteIngredient(clickedIngredient);
+                    await _ingredientsRepository.DeleteIngredient(clickedIngredient); // TODO: must work with IngredientWithType class
                     ClearAllFields();
                 }
                 else if (IngredientsGrid.CurrentCell.OwningColumn.Name == "EditBtn")
                 {
-                    FillFormForEdit(clickedIngredient);
+                    FillFormForEdit(clickedIngredient); // TODO: must work with IngredientWithType class
                 }
                 RefreshGridData();
             }

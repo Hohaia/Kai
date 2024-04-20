@@ -1,9 +1,10 @@
-﻿using DomainModel.Models;
-using System;
+﻿using DataAccessLayer.CustomQueryResults;
+using DomainModel.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
 
 namespace DataAccessLayer.Contracts
 {
@@ -11,6 +12,6 @@ namespace DataAccessLayer.Contracts
     {
         public event Action<string> OnError;
         public Task AddRecipe(Recipe recipe);
-        public Task<List<Recipe>> GetRecipes();
+        public Task<List<RecipeWithType>> GetRecipes(string? sortBy = "", string? sortOrder = "");
     }
 }

@@ -1,15 +1,16 @@
-﻿using DataAccessLayer.Contracts;
+﻿using Dapper;
+using DataAccessLayer.Contracts;
+using DataAccessLayer.CustomQueryResults;
 using DomainModel.Models;
-using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
 using Utility.Logging;
-using Dapper;
-using System.Globalization;
 
 namespace DataAccessLayer.Repositories
 {
@@ -30,7 +31,7 @@ namespace DataAccessLayer.Repositories
             try
             {
                 string query = @"insert into Recipes (Name, Description, Image, RecipeTypeId)
-                    values (@Name, @Description, @Image, @RecipeTypeId)";
+                                values (@Name, @Description, @Image, @RecipeTypeId)";
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
@@ -54,26 +55,27 @@ namespace DataAccessLayer.Repositories
             }
         }
 
-        public async Task<List<Recipe>> GetRecipes()
+        public async Task<List<RecipeWithType>> GetRecipes(string? sortBy = "", string? sortOrder = "")
         {
             try
             {
-                string query = @"SELECT r.Name, r.Description, rt.Name AS 'Type'
-                    FROM Recipes AS r JOIN RecipeTypes AS rt
-                    ON r.RecipeTypeId=rt.Id";
-                //if (!string.IsNullOrEmpty(sortBy))
-                //    query += $" order by {sortBy} {sortOrder}";
+                string query = @"SELECT r.Id, r.Name, r.Description, rt.Name AS 'Type'
+                                FROM
+                                Recipes AS r JOIN RecipeTypes AS rt
+                                ON r.RecipeTypeId = rt.Id";
+                if (!string.IsNullOrEmpty(sortBy))
+                    query += $" order by {sortBy} {sortOrder}";
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
-                    return (await connection.QueryAsync<Recipe>(query)).ToList();
+                    return (await connection.QueryAsync<RecipeWithType>(query)).ToList();
                 }
             }
             catch (Exception ex)
             {
                 string errorMessage = "An error occurred while retieving the recipes!";
                 ErrorOccured(errorMessage, ex);
-                return new List<Recipe>();
+                return new List<RecipeWithType>();
             }
         }
     }
