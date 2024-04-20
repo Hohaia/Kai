@@ -30,8 +30,8 @@ namespace DataAccessLayer.Repositories
         {
             try
             {
-                string query = @"insert into Recipes (Name, Description, Image, RecipeTypeId)
-                                values (@Name, @Description, @Image, @RecipeTypeId)";
+                string query = @"INSERT INTO Recipes (Name, Description, Image, RecipeTypeId)
+                                VALUES (@Name, @Description, @Image, @RecipeTypeId)";
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {

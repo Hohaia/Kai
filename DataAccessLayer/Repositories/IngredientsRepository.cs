@@ -30,8 +30,8 @@ namespace DataAccessLayer.Repositories
         {
             try
             {
-                string query = @"insert into Ingredients (Name, Quantity, UnitOfMeasurement, KcalPer100g, PricePer100g, IngredientTypeId)
-                                values (@Name, @Quantity, @UnitOfMeasurement, @KcalPer100g, @PricePer100g, @IngredientTypeId)";
+                string query = @"INSERT INTO Ingredients (Name, Quantity, UnitOfMeasurement, KcalPer100g, PricePer100g, IngredientTypeId)
+                                VALUES (@Name, @Quantity, @UnitOfMeasurement, @KcalPer100g, @PricePer100g, @IngredientTypeId)";
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
@@ -85,7 +85,7 @@ namespace DataAccessLayer.Repositories
         {
             try
             {
-                string query = @$"delete from Ingredients where Id={ingredient.Id}";
+                string query = @$"DELETE FROM Ingredients WHERE Id={ingredient.Id}";
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
@@ -103,15 +103,15 @@ namespace DataAccessLayer.Repositories
         {
             try
             {
-                string query = @"update Ingredients
-                                set
+                string query = @"UPDATE Ingredients
+                                SET
                                 Name = @Name,
                                 Quantity = @Quantity,
                                 UnitOfMeasurement = @UnitOfMeasurement,
                                 KcalPer100g = @KcalPer100g,
                                 PricePer100g = @PricePer100g,
                                 IngredientTypeId = @IngredientTypeId
-                                where Id = @Id";
+                                WHERE Id = @Id";
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
                     await connection.ExecuteAsync(query, ingredient);
