@@ -64,9 +64,9 @@ namespace DataAccessLayer.Repositories
                                 Ingredients AS i JOIN IngredientTypes AS it
                                 ON i.IngredientTypeId = it.Id";
                 if (!string.IsNullOrEmpty(nameSearch))
-                    query += $" where Name like '{nameSearch}%'";
+                    query += $" WHERE i.Name LIKE '{nameSearch}%'";
                 if (!string.IsNullOrEmpty(sortBy))
-                    query += $" order by {sortBy} {sortOrder}";
+                    query += $" ORDER BY {sortBy} {sortOrder}";
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {

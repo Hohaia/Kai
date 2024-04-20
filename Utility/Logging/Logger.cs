@@ -21,7 +21,7 @@ namespace Utility.Logging
 
         public static void Log(string logMessage, LogType? type = LogType.INFO)
         {
-            logMessage = logMessage.Replace("\r", "").Replace("\n", "").Replace(",", " |").Replace("The statement has been terminated.", "");
+            logMessage = logMessage.Replace("\r", " ").Replace("\n", " ").Replace(",", " |").Replace("    ", "").Replace("The statement has been terminated.", "");
 
             using (StreamWriter sw = File.AppendText(_filePath))
             {

@@ -235,16 +235,16 @@ namespace Kai.UI
         {
             if (e.RowIndex >= 0 && IngredientsGrid.CurrentCell is DataGridViewButtonCell)
             {
-                IngredientWithType clickedIngredient = (IngredientWithType)IngredientsGrid.Rows[e.RowIndex].DataBoundItem; // TODO: must work with IngredientWithType class
+                IngredientWithType clickedIngredient = (IngredientWithType)IngredientsGrid.Rows[e.RowIndex].DataBoundItem;
 
                 if (IngredientsGrid.CurrentCell.OwningColumn.Name == "DeleteBtn")
                 {
-                    await _ingredientsRepository.DeleteIngredient(clickedIngredient); // TODO: must work with IngredientWithType class
+                    await _ingredientsRepository.DeleteIngredient(clickedIngredient);
                     ClearAllFields();
                 }
                 else if (IngredientsGrid.CurrentCell.OwningColumn.Name == "EditBtn")
                 {
-                    FillFormForEdit(clickedIngredient); // TODO: must work with IngredientWithType class
+                    FillFormForEdit(clickedIngredient);
                 }
                 RefreshGridData();
             }
