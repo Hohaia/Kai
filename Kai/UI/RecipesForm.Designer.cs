@@ -55,6 +55,7 @@
             RecipesGrid.RowTemplate.Height = 25;
             RecipesGrid.Size = new Size(757, 567);
             RecipesGrid.TabIndex = 0;
+            RecipesGrid.ColumnHeaderMouseClick += RecipesGrid_ColumnHeaderMouseClick;
             // 
             // FilterDrop
             // 

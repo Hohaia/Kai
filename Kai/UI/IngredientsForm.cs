@@ -20,9 +20,10 @@ namespace Kai.UI
         private readonly IServiceProvider _serviceProvider;
         private readonly IIngredientsRepository _ingredientsRepository;
         private readonly IIngredientTypesRepository _ingredientTypesRepository;
+
         private int _ingredientToEditID;
-        private bool _errorOccured = false; // used to determine whether to clear ALL fields or to clear INPUT fields only
-        private string _sortOrder = "asc";
+        private bool _errorOccured = false;
+        private string _sortOrder = "ASC";
         private int _lastClickedColumnIndex = 0;
 
         public IngredientsForm(IServiceProvider serviceProvider, IIngredientsRepository ingredientsRepository, IIngredientTypesRepository ingredientTypesRepository)
@@ -254,15 +255,15 @@ namespace Kai.UI
         {
             string sortBy = "";
 
-            if (_lastClickedColumnIndex == e.ColumnIndex && _sortOrder == "asc")
-                _sortOrder = "desc";
+            if (_lastClickedColumnIndex == e.ColumnIndex && _sortOrder == "ASC")
+                _sortOrder = "DESC";
             else
-                _sortOrder = "asc";
+                _sortOrder = "ASC";
 
             if (e.ColumnIndex == 1)
                 sortBy = "Name";
             if (e.ColumnIndex == 2)
-                sortBy = "IngredientTypeId";
+                sortBy = "Type";
             if (e.ColumnIndex == 3)
                 sortBy = "Quantity";
             if (e.ColumnIndex == 4)

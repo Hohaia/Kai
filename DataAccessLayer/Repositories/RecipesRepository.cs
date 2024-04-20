@@ -64,7 +64,7 @@ namespace DataAccessLayer.Repositories
                                 Recipes AS r JOIN RecipeTypes AS rt
                                 ON r.RecipeTypeId = rt.Id";
                 if (!string.IsNullOrEmpty(sortBy))
-                    query += $" order by {sortBy} {sortOrder}";
+                    query += $" ORDER BY {sortBy} {sortOrder}";
 
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {

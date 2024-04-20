@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System;
+using System.Data.SqlClient;
 
 namespace Kai.UI
 {
@@ -19,6 +20,9 @@ namespace Kai.UI
         private readonly IServiceProvider _serviceProvider;
         private readonly IRecipesRepository _recipesRepository;
         private readonly IRecipeTypesRepository _recipeTypesRepository;
+
+        private string _sortOrder = "ASC";
+        private int _lastClickedColumnIndex = 0;
 
         public RecipesForm(IServiceProvider serviceProvider, IRecipesRepository recipesRepository, IRecipeTypesRepository recipeTypesRepository)
         {
@@ -61,8 +65,8 @@ namespace Kai.UI
             DataGridViewColumn[] columns = new DataGridViewColumn[6];
             columns[0] = new DataGridViewTextBoxColumn() { DataPropertyName = "Id", Visible = false };
             columns[1] = new DataGridViewTextBoxColumn() { DataPropertyName = "Name", HeaderText = "Name" };
-            columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "Description", HeaderText = "Description" };
-            columns[3] = new DataGridViewTextBoxColumn() { DataPropertyName = "Type", HeaderText = "Type" };
+            columns[2] = new DataGridViewTextBoxColumn() { DataPropertyName = "Type", HeaderText = "Type" };
+            columns[3] = new DataGridViewTextBoxColumn() { DataPropertyName = "Description", HeaderText = "Description" };
             columns[4] = new DataGridViewButtonColumn() { Text = "Delete", Name = "DeleteBtn", HeaderText = "", UseColumnTextForButtonValue = true };
             columns[5] = new DataGridViewButtonColumn() { Text = "Edit", Name = "EditBtn", HeaderText = "", UseColumnTextForButtonValue = true };
 
@@ -132,6 +136,24 @@ namespace Kai.UI
         private void ClearAllFieldsBtn_Click(object sender, EventArgs e)
         {
             ClearAllFields();
+        }
+
+        private void RecipesGrid_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            string sortBy = "";
+
+            if (_lastClickedColumnIndex == e.ColumnIndex && _sortOrder == "ASC")
+                _sortOrder = "DESC";
+            else
+                _sortOrder = "ASC";
+
+            if (e.ColumnIndex == 1)
+                sortBy = "Name";
+            if (e.ColumnIndex == 2)
+                sortBy = "Type";
+
+            RefreshGridData(sortBy, _sortOrder);
+            _lastClickedColumnIndex = e.ColumnIndex;
         }
     }
 }
