@@ -36,7 +36,7 @@ namespace DataAccessLayer.Repositories
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
                     await connection.ExecuteAsync(query, ingredient);
-                    Logger.Log(query, LogType.SQL_QUERY);
+                    Logger.Log($"[{ingredient.Name}]{query}", LogType.SQL_QUERY);
                 }
             }
             catch (SqlException ex)
@@ -90,6 +90,7 @@ namespace DataAccessLayer.Repositories
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
                     await connection.ExecuteAsync(query);
+                    Logger.Log($"[{ingredient.Name}]{query}", LogType.SQL_QUERY);
                 }
             }
             catch (Exception ex)
@@ -115,7 +116,7 @@ namespace DataAccessLayer.Repositories
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
                     await connection.ExecuteAsync(query, ingredient);
-                    Logger.Log(query, LogType.SQL_QUERY);
+                    Logger.Log($"[{ingredient.Name}]{query}", LogType.SQL_QUERY);
                 }
             }
             catch (Exception ex)

@@ -36,7 +36,7 @@ namespace DataAccessLayer.Repositories
                 using (IDbConnection connection = new SqlConnection(ConnectionHelper.ConnectionString))
                 {
                     await connection.ExecuteAsync(query, recipe);
-                    Logger.Log(query, LogType.SQL_QUERY);
+                    Logger.Log($"[{recipe.Name}]{query}", LogType.SQL_QUERY);
                 }
             }
             catch (SqlException ex)
