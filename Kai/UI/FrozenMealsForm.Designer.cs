@@ -150,6 +150,7 @@
             Margin = new Padding(5);
             Name = "FrozenMealsForm";
             Text = "FrozenMealsForm";
+            Load += FrozenMealsForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridView1).EndInit();
             ((System.ComponentModel.ISupportInitialize)ServingsNum).EndInit();
             ResumeLayout(false);
