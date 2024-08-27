@@ -19,6 +19,7 @@ namespace Kai
 
             //var startForm = serviceProvider.GetRequiredService<IngredientsForm>();
             var startForm = serviceProvider.GetRequiredService<RecipesForm>();
+            //var startForm = serviceProvider.GetRequiredService<FrozenMealsForm>();
             Application.Run(startForm);
         }
 
@@ -30,11 +31,13 @@ namespace Kai
             services.AddTransient<IIngredientTypesRepository>(_ => new IngredientTypesRepository());
             services.AddTransient<IRecipesRepository>(_ => new RecipesRepository());
             services.AddTransient<IRecipeTypesRepository>(_ => new RecipeTypesRepository());
+            services.AddTransient<IFrozenMealsRepository>(_ => new FrozenMealsRepository());
 
             services.AddTransient<IngredientsForm>();
             services.AddTransient<IngredientTypesForm>();
             services.AddTransient<RecipesForm>();
             services.AddTransient<RecipeTypesForm>();
+            services.AddTransient<FrozenMealsForm>();
 
             return services;
         }
