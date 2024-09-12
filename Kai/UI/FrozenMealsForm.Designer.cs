@@ -39,6 +39,8 @@
             richTextBox1 = new RichTextBox();
             TypeDrop = new ComboBox();
             AddTypeBtn = new Button();
+            label5 = new Label();
+            DateFrozenBox = new DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ServingsNum).BeginInit();
             SuspendLayout();
@@ -112,7 +114,7 @@
             ServingsNum.Maximum = new decimal(new int[] { 9999999, 0, 0, 0 });
             ServingsNum.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             ServingsNum.Name = "ServingsNum";
-            ServingsNum.Size = new Size(193, 33);
+            ServingsNum.Size = new Size(67, 33);
             ServingsNum.TabIndex = 9;
             ServingsNum.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
@@ -142,11 +144,30 @@
             AddTypeBtn.Text = "Add";
             AddTypeBtn.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(966, 99);
+            label5.Name = "label5";
+            label5.Size = new Size(117, 25);
+            label5.TabIndex = 14;
+            label5.Text = "Date Frozen:";
+            // 
+            // DateFrozenBox
+            // 
+            DateFrozenBox.Format = DateTimePickerFormat.Short;
+            DateFrozenBox.Location = new Point(1089, 93);
+            DateFrozenBox.Name = "DateFrozenBox";
+            DateFrozenBox.Size = new Size(156, 33);
+            DateFrozenBox.TabIndex = 15;
+            // 
             // FrozenMealsForm
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1257, 646);
+            Controls.Add(DateFrozenBox);
+            Controls.Add(label5);
             Controls.Add(AddTypeBtn);
             Controls.Add(TypeDrop);
             Controls.Add(richTextBox1);
@@ -182,5 +203,7 @@
         private RichTextBox richTextBox1;
         private ComboBox TypeDrop;
         private Button AddTypeBtn;
+        private Label label5;
+        private DateTimePicker DateFrozenBox;
     }
 }
