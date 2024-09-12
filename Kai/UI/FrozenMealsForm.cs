@@ -17,27 +17,27 @@ namespace Kai.UI
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly IFrozenMealsRepository _frozenMealsRepository;
-        private readonly IFrozenMealsTypesRepository _frozenMealsTypesRepository;
+        private readonly IFrozenMealTypesRepository _frozenMealTypesRepository;
 
         //private int _frozenMealToEditID;
         private bool _errorOccured = false;
         //private string _sortOrder = "ASC";
         //private int _lastClickedColumnIndex = 0;
 
-        public FrozenMealsForm(IServiceProvider serviceProvider, IFrozenMealsRepository frozenMealsRepository, IFrozenMealsTypesRepository frozenMealsTypesRepository)
+        public FrozenMealsForm(IServiceProvider serviceProvider, IFrozenMealsRepository frozenMealsRepository, IFrozenMealTypesRepository frozenMealTypesRepository)
         {
             InitializeComponent();
             _serviceProvider = serviceProvider;
             _frozenMealsRepository = frozenMealsRepository;
-            _frozenMealsTypesRepository = frozenMealsTypesRepository;
+            _frozenMealTypesRepository = frozenMealTypesRepository;
 
             _frozenMealsRepository.OnError += OnErrorOccured;
-            _frozenMealsTypesRepository.OnError += OnErrorOccured;
+            _frozenMealTypesRepository.OnError += OnErrorOccured;
         }
 
         private void FrozenMealsForm_Load(object sender, EventArgs e)
         {
-
+            RefreshFrozenMealTypes();
         }
 
         // BACKGROUND METHODS //
@@ -47,6 +47,12 @@ namespace Kai.UI
             if (errorMessage == "That frozen meal already exists in the database!")
                 SearchTxt.Text = NameTxt.Text;
             MessageBox.Show(errorMessage);
+        }
+        private async void RefreshFrozenMealTypes()
+        {
+            TypeDrop.DataSource = await _frozenMealTypesRepository.GetFrozenMealTypes();
+            TypeDrop.DisplayMember = "Name";
+            TypeDrop.SelectedItem = null;
         }
     }
 }

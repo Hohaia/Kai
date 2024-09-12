@@ -36,8 +36,9 @@
             label4 = new Label();
             NameTxt = new TextBox();
             ServingsNum = new NumericUpDown();
-            TypesListBox = new CheckedListBox();
             richTextBox1 = new RichTextBox();
+            TypeDrop = new ComboBox();
+            AddTypeBtn = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)ServingsNum).BeginInit();
             SuspendLayout();
@@ -74,9 +75,9 @@
             label2.AutoSize = true;
             label2.Location = new Point(774, 152);
             label2.Name = "label2";
-            label2.Size = new Size(75, 25);
+            label2.Size = new Size(55, 25);
             label2.TabIndex = 3;
-            label2.Text = "Type(s):";
+            label2.Text = "Type:";
             // 
             // label3
             // 
@@ -90,7 +91,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(774, 281);
+            label4.Location = new Point(774, 205);
             label4.Name = "label4";
             label4.Size = new Size(107, 25);
             label4.TabIndex = 5;
@@ -115,29 +116,40 @@
             ServingsNum.TabIndex = 9;
             ServingsNum.Value = new decimal(new int[] { 1, 0, 0, 0 });
             // 
-            // TypesListBox
-            // 
-            TypesListBox.FormattingEnabled = true;
-            TypesListBox.Location = new Point(891, 152);
-            TypesListBox.Name = "TypesListBox";
-            TypesListBox.Size = new Size(354, 116);
-            TypesListBox.TabIndex = 10;
-            // 
             // richTextBox1
             // 
-            richTextBox1.Location = new Point(891, 281);
+            richTextBox1.Location = new Point(891, 205);
             richTextBox1.Name = "richTextBox1";
-            richTextBox1.Size = new Size(354, 338);
+            richTextBox1.Size = new Size(354, 414);
             richTextBox1.TabIndex = 11;
             richTextBox1.Text = "";
+            // 
+            // TypeDrop
+            // 
+            TypeDrop.FormattingEnabled = true;
+            TypeDrop.Location = new Point(891, 149);
+            TypeDrop.Name = "TypeDrop";
+            TypeDrop.Size = new Size(241, 33);
+            TypeDrop.TabIndex = 12;
+            // 
+            // AddTypeBtn
+            // 
+            AddTypeBtn.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            AddTypeBtn.Location = new Point(1138, 149);
+            AddTypeBtn.Name = "AddTypeBtn";
+            AddTypeBtn.Size = new Size(107, 33);
+            AddTypeBtn.TabIndex = 13;
+            AddTypeBtn.Text = "Add";
+            AddTypeBtn.UseVisualStyleBackColor = true;
             // 
             // FrozenMealsForm
             // 
             AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1257, 646);
+            Controls.Add(AddTypeBtn);
+            Controls.Add(TypeDrop);
             Controls.Add(richTextBox1);
-            Controls.Add(TypesListBox);
             Controls.Add(ServingsNum);
             Controls.Add(NameTxt);
             Controls.Add(label4);
@@ -167,7 +179,8 @@
         private Label label4;
         private TextBox NameTxt;
         private NumericUpDown ServingsNum;
-        private CheckedListBox TypesListBox;
         private RichTextBox richTextBox1;
+        private ComboBox TypeDrop;
+        private Button AddTypeBtn;
     }
 }
